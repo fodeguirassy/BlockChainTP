@@ -14,6 +14,7 @@ contract MetaCoin {
     Owner caroline;
 
     mapping (address => Owner) public houseOwners;
+    mapping (int => House) public allHouses;
     mapping (int => int[]) public housesToOwners;
 
     House house1;
@@ -46,6 +47,12 @@ contract MetaCoin {
       house4 = House(5,"26 rue Marcel Icard, Paris", 1200000, false, false);
       house5 = House(6,"45 rue Farafagné, Lyon", 220000, false, false);
 
+      allHouses[1] = house1;
+      allHouses[2] = house2;
+      allHouses[3] = house3;
+      allHouses[4] = house4;
+      allHouses[5] = house5;
+
       int[] memory ids;
       ids[0] = 1;
       ids[1] = 2;
@@ -58,11 +65,17 @@ contract MetaCoin {
     }
 
     function addCaroHouses(address ownerAddr, string memory _name, int _money) public {
-      house1 = House(7,"24 rue de la Nation, Nice", 1420000, false, false);
-      house2 = House(8,"138 rue De Caroline, Lyon", 3160000, false, false);
-      house3 = House(9,"160 rue de Marguerite, Orleans", 147000, false, false);
-      house4 = House(10,"26 rue Marion Cotillard, Paris", 4200000, false, false);
-      house5 = House(11,"45 rue Herblé, Lyon", 250000, false, false);
+      house6 = House(7,"24 rue de la Nation, Nice", 1420000, false, false);
+      house7 = House(8,"138 rue De Caroline, Lyon", 3160000, false, false);
+      house8 = House(9,"160 rue de Marguerite, Orleans", 147000, false, false);
+      house9 = House(10,"26 rue Marion Cotillard, Paris", 4200000, false, false);
+      house10 = House(11,"45 rue Herblé, Lyon", 250000, false, false);
+
+      allHouses[6] = house6;
+      allHouses[7] = house7;
+      allHouses[8] = house8;
+      allHouses[9] = house9;
+      allHouses[10] = house10;
 
       int[] memory ids;
       ids[0] = 7;
