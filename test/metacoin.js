@@ -1,6 +1,20 @@
-const MetaCoin = artifacts.require("MetaCoin");
+
+var expect  = require('chai').expect;
+var request = require('request');
+
+it('Get Main Page Content', function(done) {
+  request('http://localhost:8080' , function(error, response, body) {
+    expect(response.statusCode).to.equal(200);
+    done();
+  });
+});
+
+it('')
+
+/*const MetaCoin = artifacts.require("MetaCoin");
 
 contract("MetaCoin", accounts => {
+
   it("should put 10000 MetaCoin in the first account", async () => {
     const instance = await MetaCoin.deployed();
     const balance = await instance.getBalance.call(accounts[0]);
@@ -52,4 +66,4 @@ contract("MetaCoin", accounts => {
       "Amount wasn't correctly sent to the receiver",
     );
   });
-});
+});*/

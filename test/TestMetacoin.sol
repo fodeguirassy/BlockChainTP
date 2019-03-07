@@ -28,4 +28,6 @@ contract TestMetacoin {
             "Owner should have 10000 MetaCoin initially"
         );
     }
+
+
 }
