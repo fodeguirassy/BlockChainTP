@@ -1,6 +1,18 @@
 import Web3 from "web3";
 import metaCoinArtifact from "../../build/contracts/MetaCoin.json";
 
+const demo = [ // for tests
+  {
+    id: 1,
+    name: "cottage",
+    price: "50k"
+  }, {
+    id: 2,
+    name: "loft",
+    price: "60k"
+  }
+];
+
 const App = {
   web3: null,
   account: null,
@@ -23,6 +35,7 @@ const App = {
       this.account = accounts[0];
 
       this.refreshBalance();
+      this.refreshAvailableHouses(demo);
     } catch (error) {
       console.error("Could not connect to contract or chain.");
     }
@@ -53,6 +66,20 @@ const App = {
     const status = document.getElementById("status");
     status.innerHTML = message;
   },
+
+  refreshAvailableHouses: function(houses) {
+    var content = "";
+    houses.forEach(function(house) {
+        var elem = '<li>'
+            + '<span>' + house.name + '</span>'
+            + '\t<span>' + house.price + '</span>'
+            + '\t<button id=' + house.id + '>buy' + '</button>'
+            + '</li>';
+        content += elem;
+    });
+    const availableHousesElement = document.getElementById("available_properties");
+    availableHousesElement.innerHTML = content;
+  }
 };
 
 window.App = App;
