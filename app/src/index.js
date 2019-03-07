@@ -70,10 +70,10 @@ const App = {
   refreshAvailableHouses: function(houses) {
     var content = "";
     houses.forEach(function(house) {
-        var elem = '<li>'
+        var elem = '<li class="list-group-item">'
             + '<span>' + house.name + '</span>'
             + '\t<span>' + house.price + '</span>'
-            + '\t<button id=' + house.id + '>buy' + '</button>'
+            + '\t<button class="btn btn-primary" id=' + house.id + '>buy' + '</button>'
             + '</li>';
         content += elem;
     });
