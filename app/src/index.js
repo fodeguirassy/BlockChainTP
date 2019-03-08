@@ -45,9 +45,30 @@ const App = {
 
       this.account = accounts[0];
 
+      const { onBuyClicked } = this.meta.methods;
+      const result = await onBuyClicked().call();
+      console.log(result);
+
+
+      const { getFirstHouseId, getFirstHouseAddress, getFirstHousePrice, getFirstHouseOwnerHash } = this.meta.methods;
+      const firstHouseId = await getFirstHouseId().call();
+      console.log(firstHouseId);
+
+      const firstHouseAddress = await getFirstHouseAddress().call();
+      console.log(firstHouseAddress);
+
+      const firstHousePrice = await getFirstHousePrice().call();
+      console.log(firstHousePrice);
+
+      const firstHouseOwnerHash = await getFirstHouseOwnerHash().call();
+      console.log(firstHouseOwnerHash);
+
+      /*
       this.refreshBalance();
       this.refreshHouses(demoAvailable, 'toBuy');
       this.refreshHouses(demoOwned, 'toSell');
+      */
+
       this.refreshTotalHouses();
     } catch (error) {
       console.error("Could not connect to contract or chain.");
