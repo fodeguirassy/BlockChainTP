@@ -5,11 +5,13 @@ const demoAvailable = [ // for tests
   {
     id: 1,
     name: "cottage",
-    price: "50k"
+    price: "50k",
+    isOnSale: true
   }, {
     id: 2,
     name: "loft",
-    price: "60k"
+    price: "60k",
+    isOnSale: true
   }
 ];
 
@@ -17,7 +19,13 @@ const demoOwned = [
   {
     id: 3,
     name: "studio",
-    price: "20k"
+    price: "20k",
+    isOnSale: false
+  }, {
+    id: 3,
+    name: "palace",
+    price: "1000k",
+    isOnSale: true
   }
 ];
 
@@ -47,7 +55,7 @@ const App = {
 
       this.refreshBalance();
       this.refreshHouses(demoAvailable, 'toBuy');
-      this.refreshHouses(demoOwned, 'toSell');
+      this.refreshHouses(demoOwned, 'owned');
       this.refreshTotalHouses();
     } catch (error) {
       console.error("Could not connect to contract or chain.");
@@ -81,23 +89,32 @@ const App = {
   },
 
   refreshHouses: function(houses, status) {
-    var content = "";
-    const btnMsg = status === 'toBuy' ? 'buy' : 'sell';
-    houses.forEach(function(house) {
+    try {
+      var content = "";
+      const btnMsg = status === 'toBuy' ? 'buy' : 'sell';
+      houses.forEach(function(house) {
         var elem = '<li class="list-group-item">'
             + '<span>' + house.name + '</span>'
-            + '\t<span>' + house.price + '</span>'
-            + '\t<button class="btn btn-primary" id=' + house.id + '>' + btnMsg + '</button>'
-            + '</li>';
+            + '\t<span>' + house.price + '</span>';
+        if (status === 'owned') {
+            const msg = house.isOnSale ? 'remove from selling' : 'sell';
+            elem += '\t<button class="btn btn-primary" id=' + house.id + '> ' + msg + '</button>';
+        } else {
+            elem += '\t<button class="btn btn-primary" id=' + house.id + '> buy </button>';
+        }
+        elem += '</li>';
         content += elem;
-    });
-    let element
-    if (status === 'toBuy') {
-      element = document.getElementById("available_properties");
-    } else {
-      element = document.getElementById("owned_properties");
+      });
+      let element
+      if (status === 'toBuy') {
+        element = document.getElementById("available_properties");
+      } else {
+        element = document.getElementById("owned_properties");
+      }
+      element.innerHTML = content;
+    } catch (error) {
+        console.log(error);
     }
-    element.innerHTML = content;
   },
 
   refreshTotalHouses: async function() {
