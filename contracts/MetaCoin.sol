@@ -34,11 +34,11 @@ contract MetaCoin {
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
 
     constructor() public {
-        balances[msg.sender] = 10000;
+        balances[0x6ff707eddd9978dB0BDDDb357c3dFDE74b4B5Ad2] = 10000;
 
         //Add mocked Data
-        addBenjaminHouses(0xC1991F924F713aAC384d63cdb5fdf7060C72a669, "Benjamin", 1000000);
-        addCaroHouses(0xC1991F924F713aAC384d63cdb5fdf7060C72a669, "Caroline", 3000000);
+        //addBenjaminHouses(0xC1991F924F713aAC384d63cdb5fdf7060C72a669, "Benjamin", 1000000);
+        //addCaroHouses(0xC1991F924F713aAC384d63cdb5fdf7060C72a669, "Caroline", 3000000);
     }
 
     function buyAHouse(int _houseId) public returns (bool) {
