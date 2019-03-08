@@ -14,8 +14,9 @@ contract MetaCoin {
     Owner caroline;
 
     mapping (address => Owner) public houseOwners;
+    mapping (int => Owner) public houseIdsToOwner;
+    mapping (address => House) public ownerToHouses;
     mapping (int => House) public allHouses;
-    mapping (int => int[]) public housesToOwners;
 
     House house1;
     House house2;
@@ -40,12 +41,63 @@ contract MetaCoin {
         addCaroHouses(0xC1991F924F713aAC384d63cdb5fdf7060C72a669, "Caroline", 3000000);
     }
 
+    function buyAHouse(int _houseId) public returns (bool) {
+      if(isHouseOwner(_houseId)) {
+        return false;
+      } else {
+          Owner memory buyer = houseOwners[msg.sender];
+          House memory house = allHouses[_houseId];
+          buyer.ownedHouseIds[(buyer.ownedHouseIds.length + 1)] = house.houseId;
+          buyer.money -= house.price;
+
+          //TODO Remove to
+          houseIdsToOwner[_houseId] = buyer;
+
+          return true;
+      }
+
+    }
+
+    function getHousesLength() public pure returns (int) {
+      return 11;
+    }
+
+    function getHouseByIndex(int _index) public view returns (int, string memory, int, bool, bool) {
+      House memory result = allHouses[_index];
+      return (result.houseId, result.location, result.price, result.isOnSale, result.sold);
+    }
+
+    function isHouseOwner(int id) public view returns (bool) {
+      Owner memory currentOwner = houseOwners[msg.sender];
+      uint housesCount = currentOwner.ownedHouseIds.length;
+      if(housesCount <= 0) {
+        return false;
+      } else {
+        uint index = 0;
+        while(index < housesCount) {
+          if(id == currentOwner.ownedHouseIds[index]) {
+            return true;
+          }
+          index ++;
+        }
+      }
+      return false;
+    }
+
+
+    function putHouseOnSale(int _houseId) public {
+      if(isHouseOwner(_houseId)) {
+        allHouses[_houseId].isOnSale = true;
+      }
+    }
+
     function addBenjaminHouses(address ownerAddr, string memory _name, int _money) public {
       house1 = House(1,"12 rue Fragonard, Nice", 120000, false, false);
       house2 = House(2,"13 rue Chanzy, Paris", 160000, false, false);
       house3 = House(4,"16 Villa Marguerite, Boulogne", 187000, false, false);
       house4 = House(5,"26 rue Marcel Icard, Paris", 1200000, false, false);
       house5 = House(6,"45 rue Farafagné, Lyon", 220000, false, false);
+
 
       allHouses[1] = house1;
       allHouses[2] = house2;
@@ -62,6 +114,11 @@ contract MetaCoin {
       benjamin = Owner(ownerAddr, _name, _money, ids);
 
       houseOwners[ownerAddr] = benjamin;
+      houseIdsToOwner[1] = benjamin;
+      houseIdsToOwner[2] = benjamin;
+      houseIdsToOwner[3] = benjamin;
+      houseIdsToOwner[4] = benjamin;
+      houseIdsToOwner[5] = benjamin;
     }
 
     function addCaroHouses(address ownerAddr, string memory _name, int _money) public {
@@ -87,9 +144,15 @@ contract MetaCoin {
       caroline = Owner(ownerAddr, _name, _money, ids);
 
       houseOwners[ownerAddr] = caroline;
+
+      houseIdsToOwner[6] = caroline;
+      houseIdsToOwner[7] = caroline;
+      houseIdsToOwner[8] = caroline;
+      houseIdsToOwner[9] = caroline;
+      houseIdsToOwner[10] = caroline;
+      houseIdsToOwner[11] = caroline;
+
     }
-
-
 
     function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
         if (balances[msg.sender] < amount) return false;
