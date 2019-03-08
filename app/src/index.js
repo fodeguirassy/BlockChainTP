@@ -1,6 +1,26 @@
 import Web3 from "web3";
 import metaCoinArtifact from "../../build/contracts/MetaCoin.json";
 
+const demoAvailable = [ // for tests
+  {
+    id: 1,
+    name: "cottage",
+    price: "50k"
+  }, {
+    id: 2,
+    name: "loft",
+    price: "60k"
+  }
+];
+
+const demoOwned = [
+  {
+    id: 3,
+    name: "studio",
+    price: "20k"
+  }
+];
+
 const App = {
   web3: null,
   account: null,
@@ -23,6 +43,8 @@ const App = {
       this.account = accounts[0];
 
       this.refreshBalance();
+      this.refreshHouses(demoAvailable, 'toBuy');
+      this.refreshHouses(demoOwned, 'toSell');
     } catch (error) {
       console.error("Could not connect to contract or chain.");
     }
@@ -53,6 +75,26 @@ const App = {
     const status = document.getElementById("status");
     status.innerHTML = message;
   },
+
+  refreshHouses: function(houses, status) {
+    var content = "";
+    const btnMsg = status === 'toBuy' ? 'buy' : 'sell';
+    houses.forEach(function(house) {
+        var elem = '<li class="list-group-item">'
+            + '<span>' + house.name + '</span>'
+            + '\t<span>' + house.price + '</span>'
+            + '\t<button class="btn btn-primary" id=' + house.id + '>' + btnMsg + '</button>'
+            + '</li>';
+        content += elem;
+    });
+    let element
+    if (status === 'toBuy') {
+      element = document.getElementById("available_properties");
+    } else {
+      element = document.getElementById("owned_properties");
+    }
+    element.innerHTML = content;
+  }
 };
 
 window.App = App;
