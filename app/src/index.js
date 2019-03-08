@@ -43,15 +43,33 @@ const App = {
       const accounts = await web3.eth.getAccounts();
 
       console.log(accounts);
-      const { getHousesLength } = this.meta.methods;
-      const test = await getHousesLength().call();
-      console.log(test);
 
       this.account = accounts[0];
 
+      const { onBuyClicked } = this.meta.methods;
+      const result = await onBuyClicked().call();
+      console.log(result);
+
+
+      const { getFirstHouseId, getFirstHouseAddress, getFirstHousePrice, getFirstHouseOwnerHash } = this.meta.methods;
+      const firstHouseId = await getFirstHouseId().call();
+      console.log(firstHouseId);
+
+      const firstHouseAddress = await getFirstHouseAddress().call();
+      console.log(firstHouseAddress);
+
+      const firstHousePrice = await getFirstHousePrice().call();
+      console.log(firstHousePrice);
+
+      const firstHouseOwnerHash = await getFirstHouseOwnerHash().call();
+      console.log(firstHouseOwnerHash);
+
+      /*
       this.refreshBalance();
       this.refreshHouses(demoAvailable, 'toBuy');
       this.refreshHouses(demoOwned, 'toSell');
+      */
+
     } catch (error) {
       console.error("Could not connect to contract or chain.");
     }
