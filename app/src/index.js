@@ -46,11 +46,6 @@ const App = {
 
       this.account = accounts[0];
 
-      const { onBuyClicked } = this.meta.methods;
-      const result = await onBuyClicked().call();
-      console.log(result);
-
-
       const { getFirstHouseId, getFirstHouseAddress, getFirstHousePrice,
         getFirstHouseOwnerHash,  } = this.meta.methods;
       const firstHouseId = await getFirstHouseId().call();
@@ -97,6 +92,9 @@ const App = {
 
       const thirdHouseOwnerHash = await getThirdHouseOwnerHash().call();
       console.log(thirdHouseOwnerHash);
+
+      const { onBuyClicked } = this.meta.methods;
+      //onBuyClicked(ownerAddress, price, houseId).send();
 
     } catch (error) {
       console.error("Could not connect to contract or chain.");
