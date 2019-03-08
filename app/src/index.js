@@ -41,7 +41,6 @@ const App = {
 
       // get accounts
       const accounts = await web3.eth.getAccounts();
-
       console.log(accounts);
 
       this.account = accounts[0];
@@ -95,6 +94,7 @@ const App = {
 
       const { onBuyClicked } = this.meta.methods;
       //onBuyClicked(ownerAddress, price, houseId).send();
+      this.refreshTotalHouses();
 
     } catch (error) {
       console.error("Could not connect to contract or chain.");
@@ -145,6 +145,13 @@ const App = {
       element = document.getElementById("owned_properties");
     }
     element.innerHTML = content;
+  },
+
+  refreshTotalHouses: async function() {
+    const { getHousesLength } = this.meta.methods;
+    const nbHouses = await getHousesLength().call();
+    const element = document.getElementById("totalHouses");
+    element.innerHTML = nbHouses;
   }
 };
 
