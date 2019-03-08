@@ -5,11 +5,13 @@ const demoAvailable = [ // for tests
   {
     id: 1,
     name: "cottage",
-    price: "50k"
+    price: "50k",
+    isOnSale: true
   }, {
     id: 2,
     name: "loft",
-    price: "60k"
+    price: "60k",
+    isOnSale: true
   }
 ];
 
@@ -17,7 +19,13 @@ const demoOwned = [
   {
     id: 3,
     name: "studio",
-    price: "20k"
+    price: "20k",
+    isOnSale: false
+  }, {
+    id: 3,
+    name: "palace",
+    price: "1000k",
+    isOnSale: true
   }
 ];
 
@@ -25,6 +33,7 @@ const App = {
   web3: null,
   account: null,
   meta: null,
+  housesOnSell:[],
 
   start: async function() {
     const { web3 } = this;
@@ -37,44 +46,14 @@ const App = {
         metaCoinArtifact.abi,
         deployedNetwork.address,
       );
-      console.log(this.meta);
 
       // get accounts
       const accounts = await web3.eth.getAccounts();
-      console.log(accounts);
 
       this.account = accounts[0];
 
-      const { getFirstHouseId, getFirstHouseAddress, getFirstHousePrice,
-        getFirstHouseOwnerHash,  } = this.meta.methods;
-      const firstHouseId = await getFirstHouseId().call();
-      console.log(firstHouseId);
-
-      const firstHouseAddress = await getFirstHouseAddress().call();
-      console.log(firstHouseAddress);
-
-      const firstHousePrice = await getFirstHousePrice().call();
-      console.log(firstHousePrice);
-
-      const firstHouseOwnerHash = await getFirstHouseOwnerHash().call();
-      console.log(firstHouseOwnerHash);
-
-
-      const { getSecondHouseId, getSecondHouseAddress,
-        getSecondHousePrice, getSecondHouseOwnerHash } = this.meta.methods;
-
-      const secondHouseId = await getSecondHouseId().call();
-      console.log(secondHouseId);
-
-      const secondHouseAddress = await getSecondHouseAddress().call();
-      console.log(secondHouseAddress);
-
-      const secondHousePrice = await getSecondHousePrice().call();
-      console.log(secondHousePrice);
-
-      const secondHouseOwnerHash = await getSecondHouseOwnerHash().call();
-      console.log(secondHouseOwnerHash);
-
+      const { onBuyClicked } = this.meta.methods;
+      const result = await onBuyClicked().call();
 
       const { getThirdHouseId, getThirdHouseAddress, getThirdHousePrice,
         getThirdHouseOwnerHash } = this.meta.methods;
@@ -92,6 +71,8 @@ const App = {
       const thirdHouseOwnerHash = await getThirdHouseOwnerHash().call();
       console.log(thirdHouseOwnerHash);
 
+      await this.getHouses();
+      this.refreshHouses(this.housesOnSell, 'toBuy');
       const { onBuyClicked } = this.meta.methods;
       //onBuyClicked(ownerAddress, price, houseId).send();
       this.refreshTotalHouses();
@@ -99,6 +80,34 @@ const App = {
     } catch (error) {
       console.error("Could not connect to contract or chain.");
     }
+  },
+
+  getHouses: async function() {
+    const { getFirstHouseId, getFirstHouseAddress, getFirstHousePrice, getFirstHouseOwnerHash } = this.meta.methods;
+    const firstHouseId = await getFirstHouseId().call();
+    const firstHouseAddress = await getFirstHouseAddress().call();
+    const firstHousePrice = await getFirstHousePrice().call();
+    const firstHouseOwnerHash = await getFirstHouseOwnerHash().call();
+    this.housesOnSell.push({
+        id: firstHouseId,
+        name: firstHouseAddress,
+        price: firstHousePrice,
+        ownerHash: firstHouseOwnerHash,
+        img: 'https://cdn.pixabay.com/photo/2013/10/09/02/27/boat-house-192990_1280.jpg'
+    });
+
+    const { getSecondHouseId, getSecondHouseAddress, getSecondHousePrice, getSecondHouseOwnerHash } = this.meta.methods;
+    const secondHouseId = await getSecondHouseId().call();
+    const secondHouseAddress = await getSecondHouseAddress().call();
+    const secondHousePrice = await getSecondHousePrice().call();
+    const secondHouseOwnerHash = await getSecondHouseOwnerHash().call();
+    this.housesOnSell.push({
+        id: secondHouseId,
+        name: secondHouseAddress,
+        price: secondHousePrice,
+        ownerHash: secondHouseOwnerHash,
+        img: 'https://cdn.pixabay.com/photo/2016/11/18/17/46/architecture-1836070_1280.jpg'
+    });
   },
 
   refreshBalance: async function() {
@@ -128,23 +137,33 @@ const App = {
   },
 
   refreshHouses: function(houses, status) {
-    var content = "";
-    const btnMsg = status === 'toBuy' ? 'buy' : 'sell';
-    houses.forEach(function(house) {
+    try {
+      var content = "";
+      const btnMsg = status === 'toBuy' ? 'buy' : 'sell';
+      houses.forEach(function(house) {
         var elem = '<li class="list-group-item">'
-            + '<span>' + house.name + '</span>'
-            + '\t<span>' + house.price + '</span>'
-            + '\t<button class="btn btn-primary" id=' + house.id + '>' + btnMsg + '</button>'
-            + '</li>';
+            + '<img class="col-md-12" src="' + house.img + '" />'
+            + '<p>' + house.name + '</p>'
+            + '\t<p>$' + house.price + 'k</p>';
+        if (status === 'owned') {
+            const msg = house.isOnSale ? 'remove from selling' : 'sell';
+            elem += '\t<button class="btn btn-primary" id=' + house.id + '> ' + msg + '</button>';
+        } else {
+            elem += '\t<button class="btn btn-primary" id=' + house.id + '> buy </button>';
+        }
+        elem += '</li>';
         content += elem;
-    });
-    let element
-    if (status === 'toBuy') {
-      element = document.getElementById("available_properties");
-    } else {
-      element = document.getElementById("owned_properties");
+      });
+      let element;
+      if (status === 'toBuy') {
+        element = document.getElementById("available_properties");
+      } else {
+        element = document.getElementById("owned_properties");
+      }
+      element.innerHTML = content;
+    } catch (error) {
+        console.log(error);
     }
-    element.innerHTML = content;
   },
 
   refreshTotalHouses: async function() {
