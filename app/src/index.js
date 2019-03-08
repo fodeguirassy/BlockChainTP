@@ -81,11 +81,21 @@ const App = {
       console.log(secondHouseOwnerHash);
 
 
-      /*
-      this.refreshBalance();
-      this.refreshHouses(demoAvailable, 'toBuy');
-      this.refreshHouses(demoOwned, 'toSell');
-      */
+      const { getThirdHouseId, getThirdHouseAddress, getThirdHousePrice,
+        getThirdHouseOwnerHash } = this.meta.methods;
+
+      const thirdHouseId = await getThirdHouseId().call();
+      console.log(thirdHouseId);
+
+      const thirdHouseAddress = await getThirdHouseAddress().call();
+      console.log(thirdHouseAddress);
+
+      const thirdHousePrice = await getThirdHousePrice().call();
+      console.log(thirdHousePrice);
+
+
+      const thirdHouseOwnerHash = await getThirdHouseOwnerHash().call();
+      console.log(thirdHouseOwnerHash);
 
       this.refreshTotalHouses();
     } catch (error) {
