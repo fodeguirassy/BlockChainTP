@@ -105,6 +105,23 @@ contract MetaCoin {
         return 0xB00272975F2fa4376dBBD05ad0f20E5888F4eBe7;
     }
 
+    function getThirdHouseId() public view returns (int) {
+        return 3;
+    }
+
+    function getThirdHouseAddress() public view returns (string memory) {
+        return "12 Place de la Nation";
+    }
+
+
+    function getThirdHousePrice() public view returns (int) {
+        return 50;
+    }
+
+    function getThirdHouseOwnerHash() public view returns (address) {
+        return 0x6ff707eddd9978dB0BDDDb357c3dFDE74b4B5Ad2;
+    }
+
 
     function isHouseOwner(int id) public view returns (bool) {
         Owner memory currentOwner = houseOwners[msg.sender];
