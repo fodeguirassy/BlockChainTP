@@ -33,6 +33,7 @@ const App = {
   web3: null,
   account: null,
   meta: null,
+  housesOnSell:[],
 
   start: async function() {
     const { web3 } = this;
@@ -45,21 +46,36 @@ const App = {
         metaCoinArtifact.abi,
         deployedNetwork.address,
       );
-      console.log(this.meta);
 
       // get accounts
       const accounts = await web3.eth.getAccounts();
-      console.log(accounts);
 
       this.account = accounts[0];
 
-      this.refreshBalance();
-      this.refreshHouses(demoAvailable, 'toBuy');
-      this.refreshHouses(demoOwned, 'owned');
+      const { onBuyClicked } = this.meta.methods;
+      const result = await onBuyClicked().call();
+
+      await this.getHouses();
+      this.refreshHouses(this.housesOnSell, 'toBuy');
       this.refreshTotalHouses();
     } catch (error) {
       console.error("Could not connect to contract or chain.");
     }
+  },
+
+  getHouses: async function() {
+    const { getFirstHouseId, getFirstHouseAddress, getFirstHousePrice, getFirstHouseOwnerHash } = this.meta.methods;
+    const firstHouseId = await getFirstHouseId().call();
+    const firstHouseAddress = await getFirstHouseAddress().call();
+    const firstHousePrice = await getFirstHousePrice().call();
+    const firstHouseOwnerHash = await getFirstHouseOwnerHash().call();
+    this.housesOnSell.push({
+        id: firstHouseId,
+        name: firstHouseAddress,
+        price: firstHousePrice,
+        ownerHash: firstHouseOwnerHash,
+        img: './img/architecture.jpg'
+    });
   },
 
   refreshBalance: async function() {
@@ -105,7 +121,7 @@ const App = {
         elem += '</li>';
         content += elem;
       });
-      let element
+      let element;
       if (status === 'toBuy') {
         element = document.getElementById("available_properties");
       } else {
