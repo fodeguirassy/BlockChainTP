@@ -74,7 +74,7 @@ const App = {
         name: firstHouseAddress,
         price: firstHousePrice,
         ownerHash: firstHouseOwnerHash,
-        img: './img/architecture.jpg'
+        img: 'https://cdn.pixabay.com/photo/2013/10/09/02/27/boat-house-192990_1280.jpg'
     });
 
     const { getSecondHouseId, getSecondHouseAddress, getSecondHousePrice, getSecondHouseOwnerHash } = this.meta.methods;
@@ -87,7 +87,7 @@ const App = {
         name: secondHouseAddress,
         price: secondHousePrice,
         ownerHash: secondHouseOwnerHash,
-        img: './img/boat-house.jpg'
+        img: 'https://cdn.pixabay.com/photo/2016/11/18/17/46/architecture-1836070_1280.jpg'
     });
   },
 
@@ -123,8 +123,9 @@ const App = {
       const btnMsg = status === 'toBuy' ? 'buy' : 'sell';
       houses.forEach(function(house) {
         var elem = '<li class="list-group-item">'
-            + '<span>' + house.name + '</span>'
-            + '\t<span>' + house.price + '</span>';
+            + '<img class="col-md-12" src="' + house.img + '" />'
+            + '<p>' + house.name + '</p>'
+            + '\t<p>$' + house.price + 'k</p>';
         if (status === 'owned') {
             const msg = house.isOnSale ? 'remove from selling' : 'sell';
             elem += '\t<button class="btn btn-primary" id=' + house.id + '> ' + msg + '</button>';
