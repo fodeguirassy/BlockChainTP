@@ -55,6 +55,22 @@ const App = {
       const { onBuyClicked } = this.meta.methods;
       const result = await onBuyClicked().call();
 
+      const { getThirdHouseId, getThirdHouseAddress, getThirdHousePrice,
+        getThirdHouseOwnerHash } = this.meta.methods;
+
+      const thirdHouseId = await getThirdHouseId().call();
+      console.log(thirdHouseId);
+
+      const thirdHouseAddress = await getThirdHouseAddress().call();
+      console.log(thirdHouseAddress);
+
+      const thirdHousePrice = await getThirdHousePrice().call();
+      console.log(thirdHousePrice);
+
+
+      const thirdHouseOwnerHash = await getThirdHouseOwnerHash().call();
+      console.log(thirdHouseOwnerHash);
+
       await this.getHouses();
       this.refreshHouses(this.housesOnSell, 'toBuy');
       this.refreshTotalHouses();

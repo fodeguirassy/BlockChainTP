@@ -123,6 +123,23 @@ contract MetaCoin {
         return (result.houseId, result.location, result.price, result.isOnSale, result.sold);
     }
 
+    function getThirdHouseId() public view returns (int) {
+        return 3;
+    }
+
+    function getThirdHouseAddress() public view returns (string memory) {
+        return "12 Place de la Nation";
+    }
+
+
+    function getThirdHousePrice() public view returns (int) {
+        return 50;
+    }
+
+    function getThirdHouseOwnerHash() public view returns (address) {
+        return 0x6ff707eddd9978dB0BDDDb357c3dFDE74b4B5Ad2;
+    }
+
     function putHouseOnSale(int _houseId) public {
         if (isHouseOwner(_houseId)) {
             allHouses[_houseId].isOnSale = true;
