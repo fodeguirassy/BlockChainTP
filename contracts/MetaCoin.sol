@@ -89,6 +89,23 @@ contract MetaCoin {
         return (result.houseId, result.location, result.price, result.isOnSale, result.sold);
     }
 
+    function getSecondHouseId() public view returns (int) {
+        return 2;
+    }
+
+    function getSecondHouseAddress() public view returns (string memory) {
+        return "25 rue de Chanzy, Nanterre";
+    }
+
+    function getSecondHousePrice() public view returns (int) {
+        return 20;
+    }
+
+    function getSecondHouseOwnerHash() public view returns (address) {
+        return 0xB00272975F2fa4376dBBD05ad0f20E5888F4eBe7;
+    }
+
+
     function isHouseOwner(int id) public view returns (bool) {
         Owner memory currentOwner = houseOwners[msg.sender];
         uint housesCount = currentOwner.ownedHouseIds.length;

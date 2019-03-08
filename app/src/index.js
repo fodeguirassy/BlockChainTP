@@ -50,7 +50,8 @@ const App = {
       console.log(result);
 
 
-      const { getFirstHouseId, getFirstHouseAddress, getFirstHousePrice, getFirstHouseOwnerHash } = this.meta.methods;
+      const { getFirstHouseId, getFirstHouseAddress, getFirstHousePrice,
+        getFirstHouseOwnerHash,  } = this.meta.methods;
       const firstHouseId = await getFirstHouseId().call();
       console.log(firstHouseId);
 
@@ -62,6 +63,23 @@ const App = {
 
       const firstHouseOwnerHash = await getFirstHouseOwnerHash().call();
       console.log(firstHouseOwnerHash);
+
+
+      const { getSecondHouseId, getSecondHouseAddress,
+        getSecondHousePrice, getSecondHouseOwnerHash } = this.meta.methods;
+
+      const secondHouseId = await getSecondHouseId().call();
+      console.log(secondHouseId);
+
+      const secondHouseAddress = await getSecondHouseAddress().call();
+      console.log(secondHouseAddress);
+
+      const secondHousePrice = await getSecondHousePrice().call();
+      console.log(secondHousePrice);
+
+      const secondHouseOwnerHash = await getSecondHouseOwnerHash().call();
+      console.log(secondHouseOwnerHash);
+
 
       /*
       this.refreshBalance();
