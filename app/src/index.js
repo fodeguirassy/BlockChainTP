@@ -73,7 +73,10 @@ const App = {
 
       await this.getHouses();
       this.refreshHouses(this.housesOnSell, 'toBuy');
+      const { onBuyClicked } = this.meta.methods;
+      //onBuyClicked(ownerAddress, price, houseId).send();
       this.refreshTotalHouses();
+
     } catch (error) {
       console.error("Could not connect to contract or chain.");
     }

@@ -31,31 +31,14 @@ contract MetaCoin {
     House house10;
     House house11;
 
+
+    mapping(int => address) public idsToOwnersAddress;
+
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
 
     constructor() public {
         balances[0x6ff707eddd9978dB0BDDDb357c3dFDE74b4B5Ad2] = 10000;
-
-        //Add mocked Data
-        //addBenjaminHouses(0xC1991F924F713aAC384d63cdb5fdf7060C72a669, "Benjamin", 1000000);
-        //addCaroHouses(0xC1991F924F713aAC384d63cdb5fdf7060C72a669, "Caroline", 3000000);
-    }
-
-    function buyAHouse(int _houseId) public returns (bool) {
-        if (isHouseOwner(_houseId)) {
-            return false;
-        } else {
-            Owner memory buyer = houseOwners[msg.sender];
-            House memory house = allHouses[_houseId];
-            buyer.ownedHouseIds[(buyer.ownedHouseIds.length + 1)] = house.houseId;
-            buyer.money -= house.price;
-
-            //TODO Remove to
-            houseIdsToOwner[_houseId] = buyer;
-
-            return true;
-        }
-
+        balances[0xB00272975F2fa4376dBBD05ad0f20E5888F4eBe7] = 10000;
     }
 
     function getFirstHouseId() public view returns (int) {
@@ -104,8 +87,32 @@ contract MetaCoin {
         return 10;
     }
 
-    function onBuyClicked() public view returns (bool) {
-        return true;
+    function onBuyClicked(address ownerAddress, int _price, int _houseId) public returns (string memory) {
+
+        if (_houseId == 1) {
+            if (msg.sender == 0x6ff707eddd9978dB0BDDDb357c3dFDE74b4B5Ad2) {
+                return "You can't buy your own house";
+            } else {
+                sendCoin(ownerAddress, uint (_price));
+                return "You've just bought a new House";
+            }
+
+        } else if (_houseId == 2) {
+            if (msg.sender == 0xB00272975F2fa4376dBBD05ad0f20E5888F4eBe7) {
+                return "You can't buy your own house";
+            } else {
+                sendCoin(ownerAddress,uint (_price));
+                return "You've just bought a new House";
+            }
+
+        } else if (_houseId == 3) {
+            if (msg.sender == 0x6ff707eddd9978dB0BDDDb357c3dFDE74b4B5Ad2) {
+                return "You can't buy your own house";
+            } else {
+                sendCoin(ownerAddress,uint (_price));
+                return "You've just bought a new House";
+            }
+        }
     }
 
     function getHousesLength() public view returns (int) {
@@ -130,7 +137,6 @@ contract MetaCoin {
     function getThirdHouseAddress() public view returns (string memory) {
         return "12 Place de la Nation";
     }
-
 
     function getThirdHousePrice() public view returns (int) {
         return 50;
@@ -229,7 +235,6 @@ contract MetaCoin {
         address ownerAddress;
         string name;
         int money;
-        int[] ownedHouseIds;
     }
 
     struct House {
